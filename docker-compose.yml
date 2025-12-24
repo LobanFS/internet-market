@@ -1,0 +1,125 @@
+services:
+  gateway-api:
+    build:
+      context: ./services/gateway
+    ports:
+      - "8080:8000"
+    depends_on:
+      - orders-api
+      - payments-api
+
+  orders-api:
+    build:
+      context: ./services/orders
+    depends_on:
+      orders-db:
+        condition: service_healthy
+
+  payments-api:
+    build:
+      context: ./services/payments
+    depends_on:
+      payments-db:
+        condition: service_healthy
+
+
+  rabbitmq:
+    image: rabbitmq:3.13-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: [ "CMD", "rabbitmq-diagnostics", "-q", "ping" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  orders-db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: orders
+      POSTGRES_PASSWORD: orders
+      POSTGRES_DB: orders
+    ports:
+      - "5433:5432"
+    volumes:
+      - orders_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U orders -d orders" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  payments-db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: payments
+      POSTGRES_PASSWORD: payments
+      POSTGRES_DB: payments
+    ports:
+      - "5434:5432"
+    volumes:
+      - payments_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U payments -d payments" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  orders-worker:
+    build:
+      context: ./services/orders
+      dockerfile: worker.Dockerfile
+    depends_on:
+      orders-db:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+
+  payments-worker:
+    build:
+      context: ./services/payments
+      dockerfile: worker.Dockerfile
+    depends_on:
+      payments-db:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+
+  payments-publisher:
+    build:
+      context: ./services/payments
+      dockerfile: publisher.Dockerfile
+    depends_on:
+      payments-db:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+
+  orders-consumer:
+    build:
+      context: ./services/orders
+      dockerfile: consumer.Dockerfile
+    depends_on:
+      orders-db:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./services/frontend
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_BASE=http://localhost:8080
+      - VITE_WS_BASE=ws://localhost:8080
+    depends_on:
+      - gateway-api
+
+
+
+volumes:
+  orders_db_data:
+  payments_db_data:

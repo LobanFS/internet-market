@@ -106,6 +106,9 @@ GET http://localhost:8080/health
 | RabbitMQ UI | [http://localhost:15672](http://localhost:15672) |
 RabbitMQ credentials:
 
+login: guest
+
+password: guest
 ```
 login: guest
 password: guest

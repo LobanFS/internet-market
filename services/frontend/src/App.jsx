@@ -416,7 +416,7 @@ function HistoryPage() {
         </Button>
 
         <div style={{ color: "#9ca3af", fontSize: 13 }}>
-          Показываем: order_id, user_id, amount, status (description не трогаем — backend не меняем)
+          Показываем: order_id, user_id, amount, status
         </div>
       </div>
 

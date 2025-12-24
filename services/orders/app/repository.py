@@ -20,7 +20,7 @@ class OrdersRepository:
             status="NEW",
         )
         session.add(order)
-        await session.flush()  # чтобы получить order.id
+        await session.flush()
         message_id = str(uuid.uuid4())
         event = Outbox(
             event_type="PaymentRequested",

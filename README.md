@@ -104,11 +104,9 @@ GET http://localhost:8080/health
 | Frontend    | [http://localhost:5173](http://localhost:5173)   |
 | API Gateway | [http://localhost:8080](http://localhost:8080)   |
 | RabbitMQ UI | [http://localhost:15672](http://localhost:15672) |
+
 RabbitMQ credentials:
 
-login: guest
-
-password: guest
 ```
 login: guest
 password: guest

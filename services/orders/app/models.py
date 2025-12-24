@@ -18,7 +18,6 @@ class Order(Base):
         TIMESTAMP, server_default=func.now(), onupdate=func.now()
     )
 
-
 class Outbox(Base):
     __tablename__ = "outbox"
 

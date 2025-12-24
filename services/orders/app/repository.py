@@ -1,9 +1,7 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 import uuid
-
 from app.models import Order, Outbox
-
 
 class OrdersRepository:
     async def create_order(

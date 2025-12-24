@@ -15,7 +15,6 @@ ROUTING_KEY = "payment.result"
 
 SessionLocal = async_sessionmaker(engine, expire_on_commit=False)
 
-
 async def handle_message(message: aio_pika.IncomingMessage):
     async with message.process(requeue=True):
         payload = json.loads(message.body.decode("utf-8"))
@@ -77,7 +76,6 @@ async def main():
         print("orders-consumer started, waiting for payment results...")
         await queue.consume(handle_message)
         await asyncio.Future()
-
 
 if __name__ == "__main__":
     asyncio.run(main())

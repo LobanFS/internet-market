@@ -1,6 +1,5 @@
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.db import engine, Base, get_session
 from app import models  # noqa: F401
 from app.schemas import CreateOrderRequest, OrderResponse
@@ -9,12 +8,10 @@ from app.repository import OrdersRepository
 app = FastAPI(title="Orders Service", version="0.0.1")
 repo = OrdersRepository()
 
-
 @app.on_event("startup")
 async def startup():
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
-
 
 @app.get("/health")
 def health():
@@ -39,7 +36,6 @@ async def create_order(
         amount=order.amount,
         status=order.status,
     )
-
 
 @app.get("/orders", response_model=list[OrderResponse])
 async def list_orders(session: AsyncSession = Depends(get_session)):

@@ -7,7 +7,7 @@
 - **RabbitMQ**
 - **Outbox / Inbox pattern**
 - **API Gateway**
-- **WebSocket (push-уведомления)**
+- **WebSocket**
 - **Frontend (React + Vite)**
 - **Docker Compose**
 

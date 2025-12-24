@@ -99,11 +99,13 @@ GET http://localhost:8080/health
 
 ## Доступные сервисы и порты
 
-| Сервис      | URL                                              |
-| ----------- | ------------------------------------------------ |
-| Frontend    | [http://localhost:5173](http://localhost:5173)   |
-| API Gateway | [http://localhost:8080](http://localhost:8080)   |
-| RabbitMQ UI | [http://localhost:15672](http://localhost:15672) |
+| Сервис      | URL                                                                        |
+|-------------|----------------------------------------------------------------------------|
+| Frontend    | [http://localhost:5173](http://localhost:5173)                             |
+| Orders      | [http://localhost:8080/orders/docs](http://localhost:8080/orders/docs)     |
+| Payments    | [http://localhost:8080/payments/docs](http://localhost:8080/payments/docs) |
+| RabbitMQ UI | [http://localhost:15672](http://localhost:15672)                           |
+
 
 RabbitMQ credentials:
 
